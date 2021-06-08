@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>登录页</title>
+		<meta charset="utf-8"/>
+		<script src="./js/jquery.min.js"></script>
+		<style type="text/css">
+			input{
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main">
+			<form id="formId">
+				<div>
+					用户名：
+					<input type="text" name="username">
+				</div>
+				<div>
+					密&nbsp;&nbsp;&nbsp;码：
+					<input type="password" name="password">
+				</div>
+				<div>
+					<input type="button" value="登录" class="btn">
+				</div>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$(".btn").click(function(){
+					$.ajax({
+						url:"http://127.0.0.1:8080/login",
+						type: "POST",
+						data:form2JsonString('formId'),
+						changeOrigin:true,
+						contentType:"application/json;charset=UTF-8",
+						async: true,
+						success:function(data){
+							var state = data.status;
+							if (state == 200) {
+								alert("登陆成功！");
+							}else{
+								alert("用户名或密码错误");
+							}
+							// console.log(state);
+						}
+					})
+				})
+
+				/** 表单序列化成json字符串的方法  */
+		 		function form2JsonString(formId) {
+		 			var paramArray = $('#' + formId).serializeArray();  
+		 			 /*请求参数转json对象*/  
+		 			 var jsonObj={};  
+		 			  $(paramArray).each(function(){  
+		 			      jsonObj[this.name]=this.value;  
+		 			  });  
+		 			 console.log(jsonObj);  
+		 			 // json对象再转换成json字符串
+		 			 return JSON.stringify(jsonObj);
+		 		}
+			})
+		</script>
+	</body>
+</html>
